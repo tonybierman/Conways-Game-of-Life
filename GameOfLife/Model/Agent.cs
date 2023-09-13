@@ -6,20 +6,18 @@ namespace Bierman.Abm.Model;
 
 public class Agent : MovingGameObject
 {
-    private readonly double _speed;
-
-    private bool _state = false;
+    private bool _isAlive = false;
 
     public List<Agent> Neighbors { get; private set; }
 
-    public bool State
+    public bool IsAlive
     {
-        get => _state;
+        get => _isAlive;
         set
         {
-            if (value.Equals(_state)) return;
-            _state = value;
-            OnPropertyChanged(nameof(State));
+            if (value.Equals(_isAlive)) return;
+            _isAlive = value;
+            OnPropertyChanged(nameof(IsAlive));
         }
     }
 
@@ -35,9 +33,9 @@ public class Agent : MovingGameObject
         if(Neighbors == null)
             Neighbors = _field.GetNeighborGameObjectsForGameObject(this).OfType<Agent>().ToList();
 
-        int livingNeighborsCount = Neighbors.Where(n => n.State == true).Count();
+        int livingNeighborsCount = Neighbors.Where(n => n.IsAlive == true).Count();
 
-        if (State == true)
+        if (IsAlive == true)
         {
             if (livingNeighborsCount < 2)
             {

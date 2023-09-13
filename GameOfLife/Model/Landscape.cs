@@ -37,7 +37,7 @@ public class Landscape : PropertyChangedBase
         foreach (var coord in Patterns.GetGliderCoords(1,1))
         {
             var agentToActivate = GameObjects.OfType<Agent>().FirstOrDefault(t => CellLocation.FromPoint(t.Location).X == coord.Item1 && CellLocation.FromPoint(t.Location).Y == coord.Item2);
-            agentToActivate!.State = true;
+            agentToActivate!.IsAlive = true;
         }
     }
 

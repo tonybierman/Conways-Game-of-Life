@@ -27,7 +27,7 @@ public class Game : GameBase
 
             foreach (var ag in _field.GameObjects.OfType<Agent>())
             {
-                ag.State = ag.FutureState == CellState.Alive;
+                ag.IsAlive = ag.FutureState == CellState.Alive;
             }
         }
     }

@@ -3,7 +3,7 @@
         xmlns:model="using:Bierman.Abm.Model"
         xmlns:infrastructure="using:Bierman.Abm.Infrastructure"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Conway's Game of Life - Tony Bierman" Width="640" Height="480"
+        Title="Conway's Game of Life - by Tony Bierman" Width="640" Height="480"
         Design.DataContext="{x:Static model:Landscape.DesignInstance}"
         x:DataType="model:Landscape">
 	
@@ -34,7 +34,7 @@
       </DataTemplate>
 		
       <DataTemplate DataType="{x:Type model:Agent}">
-		  <Border Width="15" Height="15" Classes.agenton="{Binding State}" />
+		  <Border Width="15" Height="15" Classes.agenton="{Binding IsAlive}" />
       </DataTemplate>
     </ItemsControl.DataTemplates>
   </ItemsControl>
