@@ -4,30 +4,43 @@ using System.Diagnostics;
 using System.Linq;
 using Avalonia.Input;
 
-namespace Bierman.Abm.Model;
-
-public class Game : GameBase
+namespace Bierman.Abm.Model
 {
-    private readonly Landscape _field;
-
-    public Game(Landscape field)
+    public class Game : GameBase
     {
-        _field = field;
-    }
+        private readonly Landscape _field;
+        private List<Agent> _cachedAgents;
 
-    protected override void Tick()
-    {
-        // Every second
-        if (CurrentTick % 5 == 0)
+        public Game(Landscape field)
         {
-            foreach (var ag in _field.GameObjects.OfType<Agent>())
-            {
-                ag.FutureState = ag.NextState();
-            }
+            _field = field;
+        }
 
-            foreach (var ag in _field.GameObjects.OfType<Agent>())
+        protected override void Tick()
+        {
+            // Every 3 ticks
+            if (CurrentTick % 3 == 0)
             {
-                ag.IsAlive = ag.FutureState == CellState.Alive;
+                // Caching the list of agents (if they aren't changing frequently)
+                if (_cachedAgents == null)
+                {
+                    _cachedAgents = _field.GameObjects.OfType<Agent>().ToList();
+                }
+
+                // Store updates to be batch-applied
+                var updates = new Dictionary<Agent, bool>();
+
+                foreach (var agent in _cachedAgents)
+                {
+                    var futureState = agent.NextState();
+                    updates[agent] = futureState == CellState.Alive;
+                }
+
+                // Apply updates
+                foreach (var update in updates)
+                {
+                    update.Key.IsAlive = update.Value;
+                }
             }
         }
     }

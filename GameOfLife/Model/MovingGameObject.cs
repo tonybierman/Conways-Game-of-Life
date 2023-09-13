@@ -1,51 +1,52 @@
 using System;
 using System.Linq;
 
-namespace Bierman.Abm.Model;
-
-public abstract class MovingGameObject : GameObject
+namespace Bierman.Abm.Model
 {
-    protected readonly Landscape _field;
-    private CellLocation _cellLocation;
-    private CellLocation _targetCellLocation;
-
-    protected MovingGameObject(Landscape field, CellLocation location) : base(location.ToPoint())
+    public abstract class MovingGameObject : GameObject
     {
-        _field = field;
-        CellLocation = TargetCellLocation = location;
-    }
+        protected readonly Landscape _field;
+        private CellLocation _cellLocation;
+        private CellLocation _targetCellLocation;
 
-    public override int Layer => 1;
-
-    public CellLocation CellLocation
-    {
-        get => _cellLocation;
-        private set
+        protected MovingGameObject(Landscape field, CellLocation location) : base(location.ToPoint())
         {
-            if (value.Equals(_cellLocation)) return;
-            _cellLocation = value;
-            OnPropertyChanged();
-            OnPropertyChanged(nameof(IsMoving));
+            _field = field;
+            CellLocation = TargetCellLocation = location;
         }
-    }
 
-    public CellLocation TargetCellLocation
-    {
-        get => _targetCellLocation;
-        private set
+        public const int Layer = 1;
+
+        public CellLocation CellLocation
         {
-            if (value.Equals(_targetCellLocation)) return;
-            _targetCellLocation = value;
-            OnPropertyChanged();
-            OnPropertyChanged(nameof(IsMoving));
+            get => _cellLocation;
+            private set
+            {
+                if (value.Equals(_cellLocation)) return;
+                _cellLocation = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(IsMoving));
+            }
         }
-    }
 
-    public bool IsMoving => TargetCellLocation != CellLocation;
+        public CellLocation TargetCellLocation
+        {
+            get => _targetCellLocation;
+            private set
+            {
+                if (value.Equals(_targetCellLocation)) return;
+                _targetCellLocation = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(IsMoving));
+            }
+        }
 
-    public void SetLocation(CellLocation loc)
-    {
-        CellLocation = loc;
-        Location = loc.ToPoint();
+        public bool IsMoving => TargetCellLocation != CellLocation;
+
+        public void SetLocation(CellLocation loc)
+        {
+            CellLocation = loc;
+            Location = loc.ToPoint();
+        }
     }
 }

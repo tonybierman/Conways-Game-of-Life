@@ -53,7 +53,7 @@ public class Landscape : PropertyChangedBase
     public List<CellLocation> GetNeighbors(CellLocation cellLocation)
     {
         int[] offsets = { -1, 0, 1 };
-        List<CellLocation> neighbors = new List<CellLocation>();
+        List<CellLocation> neighbors = new List<CellLocation>(8); // preallocate size, 3x3 minus center
 
         foreach (int xOffset in offsets)
         {
@@ -79,11 +79,12 @@ public class Landscape : PropertyChangedBase
 
     public List<GameObject> GetNeighborGameObjectsForGameObject(GameObject targetGameObject)
     {
-        var cellLocation = targetGameObject.Location; // assuming Location is the property name
         var neighborLocations = GetNeighbors(CellLocation.FromPoint(targetGameObject.Location));
+        var neighborSet = new HashSet<CellLocation>(neighborLocations);
 
         return GameObjects
-            .Where(go => neighborLocations.Contains(CellLocation.FromPoint(go.Location)))
+            .Where(go => neighborSet.Contains(CellLocation.FromPoint(go.Location)))
             .ToList();
     }
+
 }

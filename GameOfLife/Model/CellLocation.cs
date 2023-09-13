@@ -1,18 +1,21 @@
 using Avalonia;
+using System;
 
-namespace Bierman.Abm.Model;
-
-public readonly record struct CellLocation(int X, int Y)
+namespace Bierman.Abm.Model
 {
-    public Point ToPoint()
+    public readonly record struct CellLocation(int X, int Y)
     {
-        return new(Landscape.CellSize * X, Landscape.CellSize * Y);
-    }
+        public Point ToPoint()
+        {
+            return new(Landscape.CellSize * X, Landscape.CellSize * Y);
+        }
 
-    public static CellLocation FromPoint(Point point)
-    {
-        int x = (int)(point.X / Landscape.CellSize);
-        int y = (int)(point.Y / Landscape.CellSize);
-        return new CellLocation(x, y);
+        public static CellLocation FromPoint(Point point)
+        {
+            int x = (int)Math.Round(point.X / Landscape.CellSize);
+            int y = (int)Math.Round(point.Y / Landscape.CellSize);
+
+            return new CellLocation(x, y);
+        }
     }
 }
