@@ -1,65 +1,61 @@
 ﻿using Avalonia.Controls.Embedding.Offscreen;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Bierman.Abm.Model;
-
-public class Agent : MovingGameObject
+namespace Bierman.Abm.Model
 {
-    private bool _isAlive = false;
-
-    public List<Agent> Neighbors { get; private set; }
-
-    public bool IsAlive
+    public class Agent : MovingGameObject
     {
-        get => _isAlive;
-        set
+        private bool _isAlive = false;
+
+        public List<Agent> Neighbors { get; private set; }
+
+        public bool IsAlive
         {
-            if (value.Equals(_isAlive)) return;
-            _isAlive = value;
-            OnPropertyChanged(nameof(IsAlive));
-        }
-    }
-
-    public CellState FutureState { get; set; }
-
-    public Agent(Landscape field, CellLocation location) : base(field, location)
-    { 
-
-    }
-
-    public CellState NextState()
-    {
-        if(Neighbors == null)
-            Neighbors = _field.GetNeighborGameObjectsForGameObject(this).OfType<Agent>().ToList();
-
-        int livingNeighborsCount = Neighbors.Where(n => n.IsAlive == true).Count();
-
-        if (IsAlive == true)
-        {
-            if (livingNeighborsCount < 2)
+            get => _isAlive;
+            set
             {
-                return CellState.Dead;
-            }
-            else if (livingNeighborsCount == 2 || livingNeighborsCount == 3)
-            {
-                return CellState.Alive;
-            }
-            else
-            {
-                return CellState.Dead;
+                if (value.Equals(_isAlive)) return;
+                _isAlive = value;
+                OnPropertyChanged(nameof(IsAlive));
             }
         }
-        else
+
+        public CellState FutureState { get; set; }
+
+        public Agent(Landscape field, CellLocation location) : base(field, location)
         {
-            if (livingNeighborsCount == 3)
+        }
+
+        // Define our list of rules
+        // Based on Conway's Game of Life
+        private List<Func<bool, int, CellState?>> rules = new List<Func<bool, int, CellState?>>
+        {
+            (isAlive, count) => isAlive && count < 2 ? CellState.Dead : (CellState?)null,
+            (isAlive, count) => isAlive && (count == 2 || count == 3) ? CellState.Alive : (CellState?)null,
+            (isAlive, count) => isAlive ? CellState.Dead : (CellState?)null,
+            (isAlive, count) => !isAlive && count == 3 ? CellState.Alive : (CellState?)null,
+            (isAlive, count) => !isAlive ? CellState.Dead : (CellState?)null
+        };
+
+        public CellState NextState()
+        {
+            if (Neighbors == null)
+                Neighbors = _field.GetNeighborGameObjectsForGameObject(this).OfType<Agent>().ToList();
+
+            int livingNeighborsCount = Neighbors.Where(n => n.IsAlive).Count();
+
+            // Check each rule in order and return the first matching result
+            foreach (var rule in rules)
             {
-                return CellState.Alive;
+                CellState? result = rule(IsAlive, livingNeighborsCount);
+                if (result.HasValue)
+                    return result.Value;
             }
-            else
-            {
-                return CellState.Dead;
-            }
+
+            // Default return if none of the rules match (shouldn't get here based on our rules)
+            return CellState.Dead;
         }
     }
 }

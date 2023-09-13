@@ -18,7 +18,7 @@ public class Game : GameBase
     protected override void Tick()
     {
         // Every second
-        if (CurrentTick % 20 == 0)
+        if (CurrentTick % 5 == 0)
         {
             foreach (var ag in _field.GameObjects.OfType<Agent>())
             {

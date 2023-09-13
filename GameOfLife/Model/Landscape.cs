@@ -50,8 +50,6 @@ public class Landscape : PropertyChangedBase
     public int Height { get; }
     public int Width { get; }
 
-    private Random Random { get; } = new();
-
     public List<CellLocation> GetNeighbors(CellLocation cellLocation)
     {
         int[] offsets = { -1, 0, 1 };
