@@ -1,0 +1,10 @@
+<Application x:Class="Bierman.Abm.App"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns="https://github.com/avaloniaui">
+  <Application.Styles>
+    <FluentTheme Mode="Light" />
+	  <Style Selector="Border.agenton">
+		  <Setter Property="Background" Value="{StaticResource SystemChromeBlackMediumColor}"/>
+	  </Style>
+  </Application.Styles>
+</Application>

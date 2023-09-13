@@ -1,0 +1,41 @@
+<Window x:Class="Bierman.Abm.MainWindow"
+        xmlns="https://github.com/avaloniaui"
+        xmlns:model="using:Bierman.Abm.Model"
+        xmlns:infrastructure="using:Bierman.Abm.Infrastructure"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Conway's Game of Life - Tony Bierman" Width="640" Height="480"
+        Design.DataContext="{x:Static model:Landscape.DesignInstance}"
+        x:DataType="model:Landscape">
+	
+  <Window.Styles>
+    <Style Selector="ItemsControl > ContentPresenter" x:DataType="model:GameObject">
+      <Setter Property="Canvas.Left" Value="{Binding Location.X}" />
+      <Setter Property="Canvas.Top" Value="{Binding Location.Y}" />
+      <Setter Property="ZIndex" Value="{Binding Converter={x:Static infrastructure:ZIndexConverter.Instance }}" />
+    </Style>
+  </Window.Styles>
+	
+  <ItemsControl
+    Items="{Binding GameObjects}"
+    Width="{Binding Width, Converter={x:Static infrastructure:CellToScreenConverter.Instance}, Mode=OneWay}"
+    Height="{Binding Height, Converter={x:Static infrastructure:CellToScreenConverter.Instance}, Mode=OneWay}">
+
+    <ItemsControl.ItemsPanel>
+      <ItemsPanelTemplate>
+        <Canvas />
+      </ItemsPanelTemplate>
+    </ItemsControl.ItemsPanel>
+
+    <ItemsControl.DataTemplates>
+      <DataTemplate DataType="{x:Type model:LandscapeTile}">
+		  <Border Background="White" Width="16" Height="16" >
+			  <Canvas Width="15" Height="15" Background="Gray" />
+		  </Border>
+      </DataTemplate>
+		
+      <DataTemplate DataType="{x:Type model:Agent}">
+		  <Border Width="15" Height="15" Classes.agenton="{Binding State}" />
+      </DataTemplate>
+    </ItemsControl.DataTemplates>
+  </ItemsControl>
+</Window>
