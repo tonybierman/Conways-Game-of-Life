@@ -1,25 +1,28 @@
 ﻿using Avalonia.Controls.Embedding.Offscreen;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 
 namespace Bierman.Abm.Model
 {
     public class Agent : MovingGameObject
     {
-        private bool _isAlive = false;
         private readonly List<AgentRule> _rules;
+        private CellState _currentState;
 
         public List<Agent> Neighbors { get; private set; }
 
-        public bool IsAlive
+        public bool IsAlive => CurrentState == CellState.Alive;
+
+        public CellState CurrentState
         {
-            get => _isAlive;
+            get => _currentState;
             set
             {
-                if (value.Equals(_isAlive)) return;
-                _isAlive = value;
+                if (value.Equals(_currentState)) return;
+
+                _currentState = value;
+                OnPropertyChanged(nameof(CurrentState));
                 OnPropertyChanged(nameof(IsAlive));
             }
         }
@@ -30,6 +33,7 @@ namespace Bierman.Abm.Model
         : base(field, location)
         {
             _rules = rules ?? throw new ArgumentNullException(nameof(rules));
+            CurrentState = CellState.Dead;
         }
 
         public CellState? NextState()
@@ -41,10 +45,14 @@ namespace Bierman.Abm.Model
             {
                 var result = rule(this);
                 if (result.HasValue)
+                {
+                    FutureState = result.Value;
                     return result;
+                }
             }
 
-            return CellState.Dead; // Default if no rules apply
+            FutureState = CellState.Dead; // Default if no rules apply
+            return FutureState;
         }
     }
 }

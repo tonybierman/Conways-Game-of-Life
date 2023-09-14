@@ -8,5 +8,6 @@ namespace Bierman.Abm.Model;
 public enum CellState
 {
     Dead,
-    Alive
+    Alive, 
+    Dying
 }

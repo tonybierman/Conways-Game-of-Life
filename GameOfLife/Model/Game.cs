@@ -28,18 +28,18 @@ namespace Bierman.Abm.Model
                 }
 
                 // Store updates to be batch-applied
-                var updates = new Dictionary<Agent, bool>();
+                var updates = new Dictionary<Agent, CellState>();
 
                 foreach (var agent in _cachedAgents)
                 {
                     var futureState = agent.NextState();
-                    updates[agent] = futureState == CellState.Alive;
+                    updates[agent] = futureState.Value;
                 }
 
                 // Apply updates
                 foreach (var update in updates)
                 {
-                    update.Key.IsAlive = update.Value;
+                    update.Key.CurrentState = update.Value;
                 }
             }
         }
