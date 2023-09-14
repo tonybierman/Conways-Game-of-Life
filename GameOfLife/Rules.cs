@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GameOfLife
+namespace Bierman.Abm
 {
     public class Rules
     {

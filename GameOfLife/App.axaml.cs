@@ -2,7 +2,6 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Bierman.Abm.Model;
-using GameOfLife;
 using System.Collections.Generic;
 using System.Linq;
 

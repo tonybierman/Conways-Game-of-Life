@@ -21,10 +21,9 @@ namespace Bierman.Abm.Model
             if (CurrentTick % 3 == 0)
             {
                 // Caching the list of agents (if they aren't changing frequently)
-                // Caching the list of agents (if they aren't changing frequently)
                 if (_cachedAgents == null)
                 {
-                    _cachedAgents = _field.GameObjects.OfType<Agent>().ToList();
+                    _cachedAgents = _field.AgentManager.Agents.ToList();
                 }
 
                 // Check if all agents are dead

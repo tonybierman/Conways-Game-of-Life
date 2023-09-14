@@ -39,10 +39,10 @@ namespace Bierman.Abm.Model
             CurrentState = CellState.Dead;
         }
 
-        public CellState? NextState()
+        public virtual CellState? NextState()
         {
             if (Neighbors == null)
-                Neighbors = _field.GetNeighborGameObjectsForGameObject(this).OfType<Agent>().ToList();
+                Neighbors = _field.AgentManager.GetNeighborAgentsForAgent(this).ToList();
 
             foreach (var rule in _rules)
             {
