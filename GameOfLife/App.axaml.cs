@@ -20,7 +20,7 @@ public class App : Application
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime lifetime)
         {
             var mainWindow = new MainWindow();
-            var field = new Landscape(Rules.BriansBrainRuleset(), BriansBrainPatterns.GetSpaceshipCoords(1, 1));
+            var field = new Landscape(Rules.BriansBrainRuleset(), BriansBrainPatterns.GetSmallBurstCoords(1, 1));
             var game = new Game(field);
             game.Start();
             mainWindow.DataContext = field;
