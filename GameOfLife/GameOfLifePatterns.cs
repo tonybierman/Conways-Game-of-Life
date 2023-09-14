@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Bierman.Abm
 {
-    public class Patterns
+    public class GameOfLifePatterns
     {
         // Glider
         private static readonly (int, int)[] Glider = new (int, int)[]

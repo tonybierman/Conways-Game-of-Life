@@ -21,9 +21,17 @@ namespace Bierman.Abm.Model
             if (CurrentTick % 3 == 0)
             {
                 // Caching the list of agents (if they aren't changing frequently)
+                // Caching the list of agents (if they aren't changing frequently)
                 if (_cachedAgents == null)
                 {
                     _cachedAgents = _field.GameObjects.OfType<Agent>().ToList();
+                }
+
+                // Check if all agents are dead
+                if (_cachedAgents.All(agent => agent.CurrentState == CellState.Dead))
+                {
+                    _field.Restart(_field.InitialPatternCoords);
+                    return;  // Exit the Tick method to prevent further processing for this tick
                 }
 
                 // First, determine the future state for every agent without applying it yet
