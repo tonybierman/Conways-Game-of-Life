@@ -11,15 +11,20 @@ public class Landscape : PropertyChangedBase
 {
     public const double CellSize = 16;
 
-    public Landscape() : this(40, 30)
+    public Landscape() : this(new List<AgentRule>())
     {
     }
 
-    public Landscape(int width, int height)
+    public Landscape(List<AgentRule> rules) : this(40, 30, rules)
+    {
+    }
+
+    public Landscape(int width, int height, List<AgentRule> rules)
     {
         Width = width;
         Height = height;
         Tiles = new LandscapeTile[width, height];
+
         for (var x = 0; x < width; x++)
         {
             for (var y = 0; y < height; y++)
@@ -28,7 +33,7 @@ public class Landscape : PropertyChangedBase
                     Tiles[x, y] =
                         new LandscapeTile(new Point(x * CellSize, y * CellSize)));
 
-                var t = new Agent(this, new CellLocation(x, y));
+                var t = new Agent(this, new CellLocation(x, y), rules);
 
                 GameObjects.Add(t);
             }

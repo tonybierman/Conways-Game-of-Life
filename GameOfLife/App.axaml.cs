@@ -2,6 +2,9 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Bierman.Abm.Model;
+using GameOfLife;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Bierman.Abm;
 
@@ -17,12 +20,10 @@ public class App : Application
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime lifetime)
         {
             var mainWindow = new MainWindow();
-
-            var field = new Landscape();
+            var field = new Landscape(Rules.GameOfLifeDefault());
             var game = new Game(field);
             game.Start();
             mainWindow.DataContext = field;
-
             lifetime.MainWindow = mainWindow;
         }
     }
