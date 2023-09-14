@@ -14,6 +14,8 @@ namespace Bierman.Abm.Model
 
         public bool IsAlive => CurrentState == CellState.Alive;
 
+        public bool IsDying => CurrentState == CellState.Dying;
+
         public CellState CurrentState
         {
             get => _currentState;
@@ -24,6 +26,7 @@ namespace Bierman.Abm.Model
                 _currentState = value;
                 OnPropertyChanged(nameof(CurrentState));
                 OnPropertyChanged(nameof(IsAlive));
+                OnPropertyChanged(nameof(IsDying));
             }
         }
 

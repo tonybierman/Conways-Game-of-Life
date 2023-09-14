@@ -42,5 +42,34 @@ namespace GameOfLife
 
             return rules;
         }
+
+        public static List<AgentRule> BriansBrainRuleset()
+        {
+            var rules = new List<AgentRule>
+            {
+                agent =>
+                {
+                    if(agent.CurrentState == CellState.Alive)
+                    {
+                        return CellState.Dying;
+                    }
+                    else if(agent.CurrentState == CellState.Dying)
+                    {
+                        return CellState.Dead;
+                    }
+                    else // Current state is Dead
+                    {
+                        int livingNeighborsCount = agent.Neighbors.Count(n => n.CurrentState == CellState.Alive);
+                        if (livingNeighborsCount == 2)
+                        {
+                            return CellState.Alive;
+                        }
+                        return CellState.Dead;
+                    }
+                }
+            };
+
+            return rules;
+        }
     }
 }

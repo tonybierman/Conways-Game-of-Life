@@ -34,7 +34,7 @@
       </DataTemplate>
 		
       <DataTemplate DataType="{x:Type model:Agent}">
-		  <Border Width="15" Height="15" Classes.agenton="{Binding IsAlive}" />
+		  <Border Width="15" Height="15" Classes.agent-alive="{Binding IsAlive}"  Classes.agent-dying="{Binding IsDying}"/>
       </DataTemplate>
     </ItemsControl.DataTemplates>
   </ItemsControl>

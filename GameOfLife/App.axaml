@@ -3,8 +3,11 @@
              xmlns="https://github.com/avaloniaui">
   <Application.Styles>
     <FluentTheme Mode="Light" />
-	  <Style Selector="Border.agenton">
+	  <Style Selector="Border.agent-alive">
 		  <Setter Property="Background" Value="{StaticResource SystemChromeBlackMediumColor}"/>
+	  </Style>
+	  <Style Selector="Border.agent-dying">
+		  <Setter Property="Background" Value="Red"/>
 	  </Style>
   </Application.Styles>
 </Application>

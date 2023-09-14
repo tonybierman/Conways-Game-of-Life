@@ -18,7 +18,6 @@ namespace Bierman.Abm.Model
 
         protected override void Tick()
         {
-            // Every 3 ticks
             if (CurrentTick % 3 == 0)
             {
                 // Caching the list of agents (if they aren't changing frequently)
@@ -27,19 +26,16 @@ namespace Bierman.Abm.Model
                     _cachedAgents = _field.GameObjects.OfType<Agent>().ToList();
                 }
 
-                // Store updates to be batch-applied
-                var updates = new Dictionary<Agent, CellState>();
-
+                // First, determine the future state for every agent without applying it yet
                 foreach (var agent in _cachedAgents)
                 {
-                    var futureState = agent.NextState();
-                    updates[agent] = futureState.Value;
+                    agent.NextState();
                 }
 
-                // Apply updates
-                foreach (var update in updates)
+                // Now, update each agent's current state with its determined future state
+                foreach (var agent in _cachedAgents)
                 {
-                    update.Key.CurrentState = update.Value;
+                    agent.CurrentState = agent.FutureState;
                 }
             }
         }

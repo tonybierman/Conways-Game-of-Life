@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Avalonia;
+using Avalonia.Media;
 using Bierman.Abm.Infrastructure;
 
 namespace Bierman.Abm.Model;
@@ -11,15 +12,15 @@ public class Landscape : PropertyChangedBase
 {
     public const double CellSize = 16;
 
-    public Landscape() : this(new List<AgentRule>())
+    public Landscape() : this(new List<AgentRule>(), null)
     {
     }
 
-    public Landscape(List<AgentRule> rules) : this(40, 30, rules)
+    public Landscape(List<AgentRule> rules, (int, int)[] coords) : this(40, 30, rules, coords)
     {
     }
 
-    public Landscape(int width, int height, List<AgentRule> rules)
+    public Landscape(int width, int height, List<AgentRule> rules, (int, int)[] coords)
     {
         Width = width;
         Height = height;
@@ -39,7 +40,7 @@ public class Landscape : PropertyChangedBase
             }
         }
 
-        foreach (var coord in Patterns.GetGliderCoords(1,1))
+        foreach (var coord in coords)
         {
             var agentToActivate = GameObjects.OfType<Agent>().FirstOrDefault(t => CellLocation.FromPoint(t.Location).X == coord.Item1 && CellLocation.FromPoint(t.Location).Y == coord.Item2);
             agentToActivate!.CurrentState = CellState.Alive;
